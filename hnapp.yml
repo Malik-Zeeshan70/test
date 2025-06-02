@@ -4,7 +4,7 @@ metadata:
   namespace: develop
   labels:
     io.kompose.service: hnapp
-  name: hbs-hrms
+  name: hnapp
 spec:
   #type: NodePort
   ports:
