@@ -16,7 +16,19 @@ spec:
     spec:
       containers:
         - name: first-app
-          image: your-acr-name.azurecr.io/first-app:latest
+          image: acrhnnonprod.azurecr.io/first-app:v1.1
           ports:
             - containerPort: 5000
           imagePullPolicy: Always
+apiVersion: v1
+kind: Service
+metadata:
+name: first-app
+spec:
+selector:
+app: first-app
+ports:
+ - protocol: TCP
+port: 5000      # Exposed port for Kubernetes access
+targetPort: 5000    # Port your Flask app listens on inside the container
+type: ClusterIP
