@@ -20,15 +20,3 @@ spec:
           ports:
             - containerPort: 5000
           imagePullPolicy: Always
-apiVersion: v1
-kind: Service
-metadata:
-name: first-app
-spec:
-selector:
-app: first-app
-ports:
- - protocol: TCP
-port: 5000      # Exposed port for Kubernetes access
-targetPort: 5000    # Port your Flask app listens on inside the container
-type: ClusterIP
