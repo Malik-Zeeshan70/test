@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: develop
+  labels:
+    io.kompose.service: hnapp
+  name: hbs-hrms
+spec:
+  #type: NodePort
+  ports:
+    - name: "8060"
+      port: 8060
+      targetPort: 8060
+  selector:
+    io.kompose.service: hnapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: develop
+  labels:
+    io.kompose.service: hnapp
+  name: hnapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: hnapp
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: hnapp
+    spec:
+      nodeSelector:
+        agentpool: iot # Ensure this label exists on your target nodes
+      containers:
+        - name: hnapp
+          image: acrhnnonprod.azurecr.io/first-app:v1.1
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 150m
+              memory: 450Mi
+          ports:
+            - containerPort: 8060
+      restartPolicy: Always
